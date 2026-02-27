@@ -96,6 +96,7 @@ cd / cd $HOME / cd ~ = home directory
 SRR907977.fastq
 SRR098026.fastq
 headliners.txt
+
 ### EXERCISE 4: FINDING HIDDEN DIRECTORIES
 First navigate to the shell_data directory. There is a hidden directory within this directory. Explore the options for ls to find out how to see hidden directories. List the contents of the directory and identify the name of the text file in that directory.
 
@@ -219,3 +220,56 @@ conda activate genomics
 which fastqc
 
 unzip = opens zip files
+
+# lab 6
+
+ls -lrth = lists everything in a directory by numerical order (date)
+Ctrl + R, then begin typing what is being searched to find previous use
+> = redirection to a location rather than another command
+>> = write history to end of file, similar to word count
+grep -v = inverse grep, removes matches and leaves good reads
+'^' = indicates beginning of line
+
+## Exercise 1
+
+1. Search for the sequence `GNATNACCACTTCC` in the `SRR098026.fastq` file. 
+grep -B1 GNATNACCACTTCC SRR098026.fastq
+  Have your search return all matching lines and the name (or identifier) for each sequence
+  that contains a match.
+  GNATNACCACTTCCAGTGCTGANNNNNNNGGGATG
+
+2. Search for the sequence `AAGTT` in both FASTQ files.
+grep -B1 AAGTT *.fastq
+  Have your search return all matching lines and the name (or identifier) for each sequence
+  that contains a match.
+GATTGCTTTAATGAAAAAGTCATATAAGTTGCCATG
+TTGTCCACGCTTTTCTATGTAAAGTTTATTTGCTTT
+TGAAGCCTGCTTTTTTATACTAAGTTTGCATTATAA
+GTGGCGCTGCTGCATAAGTTGGGTTATCAGGTCGTT
+GGCAAAATGGTCCTCCAGCCAGGCCAGAAGCAAGTT
+TTTATTTGTAAAGTTTTGTTGAAATAAGGGTTGTAA
+TTCTTACCATCCTGAAGTTTTTTCATCTTCCCTGAT
+
+GNNNNNNNNCAAAGTTGATCNNNNNNNNNTGTGCG
+
+3. How do the search results differ when matching in one file vs. both files? If you wanted to keep the original FASTQ format, how would you get around this? 
+
+4. Make a file called 'bad-reads.fastq' made up of reads with 10 Ns or more in a row
+
+## Exercise 2
+
+How many sequences are there in `SRR098026.fastq`? Remember that every sequence is formed by four lines.
+ grep '^@SRR' SRR098026.fastq -c
+249
+
+## Exercise 3
+
+How many sequences in `SRR098026.fastq` contain at least 3 consecutive Ns?
+grep 'NNN' SRR0908026.fastq -c
+249
+
+for loop = allows a command to be done over and over
+for name in *.fastq
+do
+echo ${name}
+done
