@@ -273,3 +273,20 @@ for name in *.fastq
 do
 echo ${name}
 done
+
+# lab 7
+
+- created groups and picked topic for final project
+- created github repository "CYANOBACTERIA!!!"
+- next step: need metadata, create directory in gen711?
+
+special characters in metadata can create horrible issues, so avoid that shit like the plague
+- no commas, no spaces, no tabs
+
+viewed metadata (gen711 fork, lab 7, view metadata here link)
+
+"curk -O LINK" to download files
+use less to view txt files
+- Q/Ctrl C to exit less
+
+cut = remove something from a file
