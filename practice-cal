@@ -54,6 +54,9 @@ grep '@SRR097977.1 ' SRR097977.fastq
 ### 8. How many reads have 15 or more uncalled bases (NNNNNNNNNNNNNNN) in both samples? Count the number of reads in both WITHOUT making a new file. (4 points)
 
 ### 9. Make a new directory called 'to_blast' in your current directory. Then, move the two fasta files into this new 'to_blast' directory (4 points)
+mkdir to_blast
+mv FASTA1 to_blast
+mv FASTA2 to_blast
 
 ### 10. Without changing directories, what command could you use to confirm that the files made it into the 'to_blast' folder. (2 points)
 
