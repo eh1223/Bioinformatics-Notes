@@ -289,4 +289,122 @@ viewed metadata (gen711 fork, lab 7, view metadata here link)
 use less to view txt files
 - Q/Ctrl C to exit less
 
-cut = remove something from a file
+cut = remove something from a 
+
+# practice-cal
+
+### 1. Paste the command(s) below that you used get practical exam pasted into vscode. (2 point)
+ctrl+a
+ctrl+c
+ctrl+v
+
+### 2. From your home directory, make a new directory to hold fastq files called 'analysis' (2 points)
+mkdir analysis
+
+### 3. Copy the fastq files /tmp/gen711_2023/Sample1.fastq and /tmp/gen711_2023/Sample2.fastq directly into the 'analysis' directory without changing your current directory. (2 points, partial credit if you need to change directories first)
+- this may not be possible; copy and paste from github, not pulled 
+note 3/25: LMAO IT IS POSSIBLE THANKS COPILOT
+cp /tmp/gen711_2023/Sample1.fastq /tmp/gen711_2023/Sample2.fastq analysis/
+
+cp = copy, requires absolute paths
+
+For todays practice practical, use SRR fastqs instead
+### 4. Use an absolute path to change your current working directory to the 'analysis' folder/directory. (2 points, partial credit for using a relative path)
+cd /home/users/eh1223/gen711-811/analysis
+
+### 5. The fastq file you just copied is data from the UNH genome center. This is the first time you've ever seen these FASTQs. To confirm that the format of the FASTQs look ok, view one of the two files and paste the top 4 lines of the file below. (4 points) 
+head SRR097977.fastq
+OR
+head -n 4 SRR097977.fastq <- this is preferred
+head = top of file
+head -n 4 = top four lines
+-n = tells head how many to show
+
+@SRR097977.1 209DTAAXX_Lenski2_1_7:8:3:710:178 length=36
+TATTCTGCCATAATGAAATTCGCCACTTGTTAGTGT
++SRR097977.1 209DTAAXX_Lenski2_1_7:8:3:710:178 length=36
+CCCCCCCCCCCCCCC>CCCCC7CCCCCCACA?5A5<
+@SRR097977.2 209DTAAXX_Lenski2_1_7:8:3:365:371 length=36
+GGTTACTCTTTTAACCTTGATGTTTCGACGCTGTAT
++SRR097977.2 209DTAAXX_Lenski2_1_7:8:3:365:371 length=36
+CC:?:CC:?CCCCC??C?:?C-&:C:,?<&*?+7?<
+@SRR097977.3 209DTAAXX_Lenski2_1_7:8:3:663:569 length=36
+TTGTTCGCTTTTGGTAATTAATCCCGGAAATAATAA
+
+### 6. You've decided that you want to make a seperate file of the reads to BLAST them at NCBI to make sure they belong to the species that you seqiuenced. However, your blast program is written to accept FASTA files rather than FASTQ files (FASTA files only contain the header line above the read, and the read itself). You will need to make a 'FASTA' file from each FASTQ file. Before you make the new files, pipe the output to a command that that allows you to see just the first lines of the output. (5 points)  
+grep --no-group-separator '^@SRR097977.1 ' SRR097977.fastq | head
+OR
+grep -A1 --no-group-separator "^@SRR.1 " SRR.fastq | head <- this is preferred, did not test other one
+
+grep "^@SRR.1 " = matches header lines that begin with @
+-A1 = print the matching line and 1 line after it, results in header and sequence
+--no-group-separator = prevents grep from inserting spacers
+| (pipe) head = shows first 10 lines
+
+#### Hints: 
+### FASTA only needs 2/4 lines that are in a FASTQ: 1) the header line that starts with '@' and 2) the sequence right after the header. However, the base call quality scores could contain '@' as well, which might lead to unwanted matches. 
+### You can use the info in the header line to be very specific about what you are trying to match. 
+### Add the '--no-group-separator' option to the other options of your command to keep the '--' out of the output
+
+### 7. Redirect the output of your command (command in 6 that is converting the format of the FASTQ into FASTA) into new files. Give the new file the same names, but uses the '.fasta' extension rather than the '.fastq' extension of the original file name. (5 points)
+head -n 4 SRR.fastq > SRR.fasta
+*> = creates or overwrites a file
+*>> = adds to existing file
+
+### 8. How many reads have 15 or more uncalled bases (NNNNNNNNNNNNNNN) in both samples? Count the number of reads in both WITHOUT making a new file. (4 points)
+wc -l SRR.fastq
+OR
+grep -c "^@" SRR.fastq
+
+wc = word count
+wc -l (L) = word count for lines only
+
+grep = print lines that matches pattern
+-c = count
+grep -c = counts lines that match pattern, outputs a number
+
+### 9. Make a new directory called 'to_blast' in your current directory. Then, move the two fasta files into this new 'to_blast' directory (4 points)
+mkdir to_blast
+mv FASTA1 to_blast
+mv FASTA2 to_blast
+
+### 10. Without changing directories, what command could you use to confirm that the files made it into the 'to_blast' folder. (2 points)
+ls PATH/TO/FOLDER
+ex. ls shell_data/to_blast
+OR
+ls PATH/TO/FOLDER*.fastq OR *.fasta
+
+### 11. What is the 100th line in the Sample1.fasta file? (hint: the 'head' command is one way to do this- but you may need to specify an option) (2 points)
+head -n 100 Sample1.fasta | tail -n 1
+head -n 100 = prints first 100 lines
+tail -n 1 = takes the last line
+| = a pipe, sends the output of command 1 directly into command 2
+ex. head -n 100 prints 100 lines, | sends the 100 lines into tail, tail -n 1 prints the last line, results in line 100 exclusively
+
+### 12. Run md5sum on Sample1.fasta (md5sum Sample1.fasta). Then, run it again, but redirect the output to a new file called 'my_md5sums.txt'.  (2 points)
+md5sum = MD5 checksum, verifies file integrity and detects corruption
+
+md5sum Sample1.fasta > my_md5sums.txt
+*> = redirects output
+my_md5sums.txt = file is created
+
+cat = reads a file and prints contents
+cat FILENAME.txt = view a vile
+cat FILE1 FILE 2 = view files in order
+cat FILE1.txt FILE2.txt > combined.txt = combines files into one new file
+cat Sample1.fasta | grep "ANYTHING" = sends file contents into grep for searching
+
+### 13. Next, run the md5sum command on Sample2.fasta and add it the the end of 'my_md5sums.txt'. (2 points)
+md5sum Sample2.fasta >>my_md5sum.txt
+
+### 14. Lastly, add your name to the end of 'my_md5sums.txt' file. (2 points)
+echo "NAME" >> my_md5sums.txt
+
+echo = used to produce text, this case a name
+*>> = adds to end of  (asterisk not included but the alligators alone do a weird thing)
+
+### Extra credit: Run fastqc on one of the fastq files, and one of the fasta files. Did they both run? Why or why not?  (2 points)
+fastqc is specifically for raw sequences  that is stored in fastq format that includes quality scores
+does not run with fasta bc it doesnt have quality scores
+
+# bash commands
