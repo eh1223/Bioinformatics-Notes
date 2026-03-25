@@ -303,7 +303,7 @@ mkdir analysis
 
 ### 3. Copy the fastq files /tmp/gen711_2023/Sample1.fastq and /tmp/gen711_2023/Sample2.fastq directly into the 'analysis' directory without changing your current directory. (2 points, partial credit if you need to change directories first)
 - this may not be possible; copy and paste from github, not pulled 
-note 3/25: LMAO IT IS POSSIBLE THANKS COPILOT
+- note 3/25: LMAO IT IS POSSIBLE THANKS COPILOT
 cp /tmp/gen711_2023/Sample1.fastq /tmp/gen711_2023/Sample2.fastq analysis/
 
 cp = copy, requires absolute paths
@@ -395,7 +395,7 @@ cat FILE1.txt FILE2.txt > combined.txt = combines files into one new file
 cat Sample1.fasta | grep "ANYTHING" = sends file contents into grep for searching
 
 ### 13. Next, run the md5sum command on Sample2.fasta and add it the the end of 'my_md5sums.txt'. (2 points)
-md5sum Sample2.fasta >>my_md5sum.txt
+md5sum Sample2.fasta >> my_md5sum.txt
 
 ### 14. Lastly, add your name to the end of 'my_md5sums.txt' file. (2 points)
 echo "NAME" >> my_md5sums.txt
