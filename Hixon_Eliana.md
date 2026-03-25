@@ -304,6 +304,7 @@ mkdir analysis
 ### 3. Copy the fastq files /tmp/gen711_2023/Sample1.fastq and /tmp/gen711_2023/Sample2.fastq directly into the 'analysis' directory without changing your current directory. (2 points, partial credit if you need to change directories first)
 - this may not be possible; copy and paste from github, not pulled 
 - note 3/25: LMAO IT IS POSSIBLE THANKS COPILOT
+
 cp /tmp/gen711_2023/Sample1.fastq /tmp/gen711_2023/Sample2.fastq analysis/
 
 cp = copy, requires absolute paths
@@ -408,3 +409,36 @@ fastqc is specifically for raw sequences  that is stored in fastq format that in
 does not run with fasta bc it doesnt have quality scores
 
 # bash commands
+- https://phoenixnap.com/kb/bash-commands
+
+ls = lists all files and directories in current directory
+ls -a = shows hidden files in output
+
+cd = changes current directory to directory specified
+cd - = goes to previous directory
+cd ~ = goes to home directory
+syntax: cd [directory]
+
+pwd = prints path of current working directory
+syntax: pwd [options] or simply just pwd
+ex. pwd -L or -P (but we didnt use these so whatever)
+
+cat = displays contents of a file without opening the file
+cat -n = numbers all output lines
+syntax: cat [options] [file path]
+ex. cat -n (the option) file.txt
+
+mkdir = creates a new, empty directory
+syntax: mkdir DIR NAME
+
+rmdir = removes ONLY EMPTY directory
+syntax: rmdir DIR NAME
+
+cp = copy files and directories
+syntax: cp [source (usually a file)] [destination (usually a directory)]
+
+mv = move directories and files
+syntax: mv [source] [destination]
+
+grep = searches files for lines that match a search pattern
+syntax: grep [options, like -c] ["search pattern'] [file]
