@@ -417,28 +417,46 @@ ls -a = shows hidden files in output
 cd = changes current directory to directory specified
 cd - = goes to previous directory
 cd ~ = goes to home directory
-syntax: cd [directory]
+- syntax: cd [directory]
 
 pwd = prints path of current working directory
-syntax: pwd [options] or simply just pwd
+- syntax: pwd [options] or simply just pwd
 ex. pwd -L or -P (but we didnt use these so whatever)
 
 cat = displays contents of a file without opening the file
 cat -n = numbers all output lines
-syntax: cat [options] [file path]
+- syntax: cat [options] [file path]
 ex. cat -n (the option) file.txt
 
 mkdir = creates a new, empty directory
-syntax: mkdir DIR NAME
+- syntax: mkdir DIR NAME
 
 rmdir = removes ONLY EMPTY directory
-syntax: rmdir DIR NAME
+- syntax: rmdir DIR NAME
 
 cp = copy files and directories
-syntax: cp [source (usually a file)] [destination (usually a directory)]
+- syntax: cp [source (usually a file)] [destination (usually a directory)]
 
 mv = move directories and files
-syntax: mv [source] [destination]
+- syntax: mv [source] [destination]
 
 grep = searches files for lines that match a search pattern
-syntax: grep [options, like -c] ["search pattern'] [file]
+- syntax: grep [options, like -c] ["search pattern'] [file]
+
+head = allows preview of the beginning section of a file
+head -n = shows the first n number of lines
+- syntax: head [options] [file]
+
+tail = displays the end of a file
+tail -n = shows the last n number of lines
+- syntax: tail [option] [file]
+
+echo = displays text as standard output
+- syntax: echo [option] [string]
+
+| (pipe) = connects outputs of one command to the input of another command
+- syntax: [command 1] | [command 2]
+
+[>] = redirects output to a file
+[>>] = adds outout to specified file
+- syntax: [command] < [file]
