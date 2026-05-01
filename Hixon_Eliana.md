@@ -342,6 +342,9 @@ grep "^@SRR.1 " = matches header lines that begin with @
 --no-group-separator = prevents grep from inserting spacers
 | (pipe) head = shows first 10 lines
 
+4/30:
+also can use grep -A1 --no-group-separator '^@' FILE.fastq | head
+
 #### Hints: 
 ### FASTA only needs 2/4 lines that are in a FASTQ: 1) the header line that starts with '@' and 2) the sequence right after the header. However, the base call quality scores could contain '@' as well, which might lead to unwanted matches. 
 ### You can use the info in the header line to be very specific about what you are trying to match. 
@@ -364,10 +367,19 @@ grep = print lines that matches pattern
 -c = count
 grep -c = counts lines that match pattern, outputs a number
 
+4/30:
+grep -B1 -A2 'NNNNNNNNNNNNNNN' FILE.fastq | grep -c '^@' 
+
+grep -B1 -A2 = gives full 4-line FASTQ record
+-c = counts reads
+
 ### 9. Make a new directory called 'to_blast' in your current directory. Then, move the two fasta files into this new 'to_blast' directory (4 points)
 mkdir to_blast
 mv FASTA1 to_blast
 mv FASTA2 to_blast
+
+4/30:
+mv *.fasta to_blast
 
 ### 10. Without changing directories, what command could you use to confirm that the files made it into the 'to_blast' folder. (2 points)
 ls PATH/TO/FOLDER
@@ -375,8 +387,12 @@ ex. ls shell_data/to_blast
 OR
 ls PATH/TO/FOLDER*.fastq OR *.fasta
 
+4/30:
+ls to_blast <- much easier and much fewer steps
+
 ### 11. What is the 100th line in the Sample1.fasta file? (hint: the 'head' command is one way to do this- but you may need to specify an option) (2 points)
 head -n 100 Sample1.fasta | tail -n 1
+
 head -n 100 = prints first 100 lines
 tail -n 1 = takes the last line
 | = a pipe, sends the output of command 1 directly into command 2
@@ -460,3 +476,140 @@ echo = displays text as standard output
 [>] = redirects output to a file
 [>>] = adds outout to specified file
 - syntax: [command] < [file]
+
+gzip = compresses files
+- syntax: [options] [file]
+- options:
+-d = decompresses a compressed file
+
+gunzip = decompresses files
+
+- https://ss64.com/bash/
+
+wc = word count, prints byte, word, line counts
+wc -c = prints byte counts
+wc -w = prints word counts
+wc -l = prints newline counts
+wc -L = prints longest line of file
+- syntax: wc [options] [file]
+
+## Practical
+---
+
+1. Use an absolute path to change your current working directory to the 'prac_exam' directory that you just cloned (2 points). 
+  
+  cd /home/users/eh1223/prac_exam_2026
+  
+2. From 'prac_exam' directory, make the following directory structure in a single command: `data/untrimmed_fastq` (2 points, -1 point if you need to use 2 commands for this. Hint: There is a flag/option that lets you create nested directories all at once.)
+
+mkdir untrimmed_fastq | mkdir data
+mv untrimmed_fastq data
+
+mkdir untrimmed_fastq/ data/ <- makes two separate directories
+CORRECT: mkdir -p data/untrimmed_fastq
+-p = allows for making parent directories
+
+3. Copy the two fastq files in the `/tmp/Gen711-811_data` directly into your `untrimmed_fastq` directory without changing your current directory. (2 points, partial credit if you need to change directories first. Multiple correct answers)
+  
+cp -r /tmp/Gen711-811_data/ untrimmed_fastq DESTINATION
+-r = recursive, copies folder, all files, all subfolders
+OR
+cp /tmp/gen711_2023/Sample1.fastq home/users/eh1223/DESIRED-DIRECTORY
+
+4. List all the hidden files in this repo. Paste the command below (2 points)
+
+ls -a
+
+5. Use a relative path to change your current working directory to the `untrimmed_fastq` directory. (2 points)
+
+cd /home/users/eh1223/prac_exam_2026/data/untrimmed_fastq <- this is an absolute path, relative path is dependent on current directory
+if in [eh1223@ron prac_exam_2026], then cd data/untrimmed_fastq
+
+6. These are paired-end FASTQ files from an *E. coli* long-term evolution experiment. To confirm the files look ok, view one of them and paste the top 4 lines below. (4 points, Hint: These files are gzip-compressed. Multiple correct answers)
+
+gunzip SRR2584863_2.fastq.gz
+head -n 4 SRR2584863_2.fastq
+
+
+7. How large (file size) are the two uncompressed fastq files? Use a single command with appropriate options to show the file sizes in a human-readable format (e.g., MB). Paste the command and output below. (2 points)
+
+545M for SRR2584863_2
+972M for SRR2584866_2
+
+CORRECT: ls -lrth = lists files oldest -> newest, with readable sizes
+OR
+ls -lh FILE NAME
+-l = long listing (permissions, owner, size, timestamp)
+-h = human readable
+-r = reverses
+-t = sort by modification time
+
+8. For each fastq, how many quality score lines have the '@' symbol in them? To answer this, use one line of piped bash commands for each fastq, and the output should be a single number.(2 points) 
+
+4067718
+grep "@" SRR2584863_2.fastq | grep -v "^@" SRR2584863_2.fastq -c
+i think this is CORRECT
+
+9. How many reads have 15 or more uncalled bases (`NNNNNNNNNNNNNNN`) in `SRR2584863_2.fastq`? Count WITHOUT making a new file (4 points)
+
+3015
+grep "NNNNNNNNNNNNNNN" SRR2584863_2.fastq | wc -l
+
+CORRECT: grep -B1 -A2 'N\{15\}' FILE.FASTQ | grep -c '^@'
+'N\{15\}' = 15 or more
+can also use "NNNNNNNNNNNNNNN"
+-B1 = 1 before the sequence line
+-A2 = 2 after the sequence line
+-c = counts reads
+if zipped: zgrep
+
+10. Make a single fasta file from the two fastqs using the reads found in the question above, and their respective info lines. Name the new file 'badreads.fasta' in the 'untrimmed_fastq' directory.  (4 points)
+
+Hint: the first 4 lines of badreads.fasta should look similar (but maybe not exactly) to this:
+```
+@SRR2584863.1 HWI-ST957:244:H73TDADXX:1:1101:4712:2181/2
+GGCGACATTACTGACCCGCNNNNNNNNNNNNNNNNNNNCGACNNNNNNNNNNNNNNNNNCCTGATNNNNNNNNNNNNNNNTCAGNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+@SRR2584863.2 HWI-ST957:244:H73TDADXX:1:1101:8571:2191/2
+TCCCCGGAGTCAGCAGGGTGNNNNNNNNNNNNNNNNNATACATNNNNNNNNNNNNNNNGTTTTTGNNNNNNNNNNNNNNGCTGTCNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
+```
+grep -B1 "NNNNNNNNNNNNNNN" SRR2584866_2.fastq > badreads.fasta
+
+11. Activate the conda 'genomics' environment that contains `fastqc` and confirm where `fastqc` is installed. Paste the command and its output below. (2 points)
+
+conda activate genomics
+fastqc which
+
+CORRECT: which fastqc
+result should look like /user/local/bin/fastqc
+
+12. Run `fastqc` on `SRR2584863_1.fastq`. Then, create a `results/fastqc_untrimmed_reads` directory and move both the `.zip` and `.html` output files into it — all without leaving your `untrimmed_fastq` directory. Paste all commands used. (4 points)
+
+mkdir results
+mkdir fastqc_untrimmed_reads
+mv fastqc_untrimmed_reads/ results
+mv SRR2584863_2_fastqc.html fastqc_untrimmed_reads
+mv SRR2584863_2_fastqc.zip fastqc_untrimmed_reads
+
+CORRECT: 
+fastqc FILE.FASTQ
+mkdir -p results/fastqc_untrimmed_reads
+mv FILE_fastqc.* DESTINATION DIRECTORY/
+
+
+13. Without changing directories, what is the 100th line of the file `SRR2584863_1.trim.fastq` in your `trimmed_fastq` directory? (2 points)
+
+@@@FFFFDDFFHHJJIIGIJJGIHIJGGJJGGIIGHHHGEEHGIIGHIGIDGIBHHGHGFFFFFEDEEDD?BBD<A:@A>:3@>?(2989>:(4(45&000::@<A(8(&.09>1>@:::>CAA>>B>><55:(:@8?B###########
+head -n 100 SRR2584863_2.fastq | tail -n 1
+
+
+14. Run `md5sum` on `SRR2584863_1.fastq`. Then run it again, redirecting the output to a new file called `my_md5sums.txt`. Next, run `md5sum` on `SRR2584863_2.fastq` and **append** it to `my_md5sums.txt`. Finally, append your name to the end of `my_md5sums.txt`. Paste all commands used. (4 points)
+
+CORRECT:
+md5sum SRR2584863_2.fastq
+md5sum SRR2584863_2.fastq > my_md5sums.txt
+md5sum SRR2584866_2.fastq >> my_md5sums.txt
+echo "ELIANA" >> my_md5sums.txt
+
+15. Push all of the new files that you created to your github repo using vscode's github side bar (4 points). 
+---
+

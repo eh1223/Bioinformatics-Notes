@@ -27,6 +27,8 @@ mkdir analysis
 ### 3. Copy the fastq files /tmp/gen711_2023/Sample1.fastq and /tmp/gen711_2023/Sample2.fastq directly into the 'analysis' directory without changing your current directory. (2 points, partial credit if you need to change directories first)
 - this may not be possible; copy and paste from github, not pulled
 
+cp /tmp/gen711_2023/Sample1.fastq home/users/eh1223/DESIRED-DIRECTORY
+
 For todays practice practical, use SRR fastqs instead
 ### 4. Use an absolute path to change your current working directory to the 'analysis' folder/directory. (2 points, partial credit for using a relative path)
 cd /home/users/eh1223/gen711-811/analysis
