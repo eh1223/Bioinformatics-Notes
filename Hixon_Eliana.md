@@ -598,7 +598,6 @@ mv FILE_fastqc.* DESTINATION DIRECTORY/
 
 13. Without changing directories, what is the 100th line of the file `SRR2584863_1.trim.fastq` in your `trimmed_fastq` directory? (2 points)
 
-@@@FFFFDDFFHHJJIIGIJJGIHIJGGJJGGIIGHHHGEEHGIIGHIGIDGIBHHGHGFFFFFEDEEDD?BBD<A:@A>:3@>?(2989>:(4(45&000::@<A(8(&.09>1>@:::>CAA>>B>><55:(:@8?B###########
 head -n 100 SRR2584863_2.fastq | tail -n 1
 
 
