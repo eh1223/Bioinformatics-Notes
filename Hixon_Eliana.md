@@ -609,6 +609,36 @@ md5sum SRR2584863_2.fastq > my_md5sums.txt
 md5sum SRR2584866_2.fastq >> my_md5sums.txt
 echo "ELIANA" >> my_md5sums.txt
 
-15. Push all of the new files that you created to your github repo using vscode's github side bar (4 points). 
 ---
 
+# 01 trim
+1. conda activate genomics
+2. cd CYANOBACTERIA
+3. polyg_len=200
+4. chmod +x code/polyGfilter.sh
+5. find data/poly-G-trimmed/ -size 0 -print -delete
+
+# 02 cut-adapt
+1. conda activate qiime2 amplicon 2026.1
+2. determine primer and proj name 
+primer = 16s_V4-V5
+proj name = DEP_${primer}
+3. qiime import
+4. forward primer
+5. reverse primer
+6. cutadapt_config
+7. qiime cutadapt parameters
+8. qiime demux summarize
+
+# 03 denoise
+1. conda activate qiime2
+2. determine primer and proj name
+3. trunc
+lenf=220
+lenr=215
+4. trim
+leftf=0
+leftr=0
+5. thread
+threads=1
+6. qiime dada denoise paired
